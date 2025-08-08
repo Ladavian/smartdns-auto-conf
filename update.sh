@@ -8,22 +8,20 @@ curl -sSL https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/maste
 curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt > rules/direct-list.txt
 curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt > rules/apple-cn.txt
 
-# 合并国内规则，去重，转 SmartDNS 格式并标记为国内组
+# 合并国内规则，去重，转纯域名格式
 cat rules/accelerated-domains.china.conf rules/direct-list.txt rules/apple-cn.txt \
   | grep -v '^#' | grep -v '^$' \
   | sed 's/^server=\/\([^/]*\)\/.*$/\1/' \
-  | sort | uniq \
-  | sed 's/^/nameserver /; s/$/ -group cn/' > rules/china.conf
+  | sort | uniq > rules/china.conf
 
 # 下载国外规则源
 curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/proxy-list.txt > rules/proxy-list.txt
 curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/gfw.txt > rules/gfw.txt
 
-# 合并国外规则，去重，转 SmartDNS 格式并标记为国外组
+# 合并国外规则，去重，转纯域名格式
 cat rules/proxy-list.txt rules/gfw.txt \
   | grep -v '^#' | grep -v '^$' \
-  | sort | uniq \
-  | sed 's/^/nameserver /; s/$/ -group foreign/' > rules/foreign.conf
+  | sort | uniq > rules/foreign.conf
 
 # 添加更新时间戳
 date +"# Updated at: %Y-%m-%d %H:%M:%S" | tee -a rules/china.conf rules/foreign.conf
