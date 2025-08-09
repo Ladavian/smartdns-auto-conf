@@ -4,31 +4,38 @@ on:
   push:
     branches: [main]
   schedule:
-    - cron: "0 1 * * *"  # UTC 0点 (北京时间 8:00)
+    - cron: "10 2 * * *"  # UTC时间1点 (北京时间9:00)
   workflow_dispatch:
 
 permissions:
-  contents: write  # 关键权限配置
+  contents: write  # 授予写入权限
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      # 关键修复：添加写入token
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 获取完整提交历史
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}  # 启用写入权限
 
       - name: Set up Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Run update script
         run: bash update.sh
 
+      # 关键修复：安全的提交推送逻辑
       - name: Commit and push changes
         run: |
           git add .
-          git diff-index --quiet HEAD || git commit -m "Update rules $(date +'%Y-%m-%d %H:%M:%S')"
-          git push
+          if git diff-index --quiet HEAD; then
+            echo "No changes detected"
+          else
+            git commit -m "Update rules $(date +'%Y-%m-%d %H:%M:%S')"
+            git push origin HEAD:main
+          fi
