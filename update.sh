@@ -6,7 +6,6 @@ mkdir -p rules
 # 下载国内规则源
 curl -sSL https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf > rules/accelerated-domains.china.conf
 curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt > rules/direct-list.txt
-curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt > rules/apple-cn.txt
 
 # 合并国内规则，去重，转纯域名格式
 cat rules/accelerated-domains.china.conf rules/direct-list.txt rules/apple-cn.txt \
