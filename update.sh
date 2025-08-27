@@ -6,11 +6,11 @@ mkdir -p rules
 # =============================
 # 国内规则
 # =============================
-curl -sSL https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/master/accelerated-domains.china.conf > rules/accelerated-domains.china.conf
+curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/china-list.txt > rules/china-list.txt
 curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt > rules/direct-list.txt
 
 # 合并国内规则，去重，转纯域名格式
-cat rules/accelerated-domains.china.conf rules/direct-list.txt \
+cat rules/china-list.txt rules/direct-list.txt \
   | grep -v '^#' | grep -v '^$' \
   | sed 's/^server=\/\([^/]*\)\/.*$/\1/' \
   | sort | uniq > rules/china.conf
