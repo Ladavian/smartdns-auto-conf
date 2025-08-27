@@ -21,7 +21,7 @@ curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release
 # 修改这里：添加 sed 命令来移除 "full:" 前缀
 cat rules/apple-cn.txt \
   | grep -v '^#' | grep -v '^$' \
-  | sed 's/^full://' \  # 新增这行来移除 "full:" 前缀
+  | sed 's/^full://' \
   | sed 's/^server=\/\([^/]*\)\/.*$/\1/' \
   | sort | uniq > rules/apple-cn.conf
 
