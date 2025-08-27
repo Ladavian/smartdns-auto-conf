@@ -60,4 +60,5 @@ date +"# Updated at: %Y-%m-%d %H:%M:%S" | tee -a rules/china.conf rules/foreign.
 mv rules/china.conf china.conf
 mv rules/foreign.conf foreign.conf
 mv rules/adblock.conf adblock.conf
+mv rules/apple-cn.conf apple-cn.conf
 rm -rf rules
