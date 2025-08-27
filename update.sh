@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 set -e
 
 mkdir -p rules
@@ -18,8 +18,10 @@ cat rules/accelerated-domains.china.conf rules/direct-list.txt \
 curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt > rules/apple-cn.txt
 
 # 合并国内规则，去重，转纯域名格式
+# 修改这里：添加 sed 命令来移除 "full:" 前缀
 cat rules/apple-cn.txt \
   | grep -v '^#' | grep -v '^$' \
+  | sed 's/^full://' \  # 新增这行来移除 "full:" 前缀
   | sed 's/^server=\/\([^/]*\)\/.*$/\1/' \
   | sort | uniq > rules/apple-cn.conf
 
@@ -51,7 +53,7 @@ sort | uniq > rules/adblock.conf
 # =============================
 # 添加更新时间戳
 # =============================
-date +"# Updated at: %Y-%m-%d %H:%M:%S" | tee -a rules/china.conf rules/foreign.conf rules/adblock.conf
+date +"# Updated at: %Y-%m-%d %H:%M:%S" | tee -a rules/china.conf rules/foreign.conf rules/adblock.conf rules/apple-cn.conf
 
 
 # =============================
