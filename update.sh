@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 set -e
 
 mkdir -p rules
@@ -10,11 +10,18 @@ curl -sSL https://raw.githubusercontent.com/felixonmars/dnsmasq-china-list/maste
 curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/direct-list.txt > rules/direct-list.txt
 
 # 合并国内规则，去重，转纯域名格式
-cat rules/accelerated-domains.china.conf rules/direct-list.txt rules/apple-cn.txt \
+cat rules/accelerated-domains.china.conf rules/direct-list.txt \
   | grep -v '^#' | grep -v '^$' \
   | sed 's/^server=\/\([^/]*\)\/.*$/\1/' \
   | sort | uniq > rules/china.conf
 
+curl -sSL https://raw.githubusercontent.com/Loyalsoldier/v2ray-rules-dat/release/apple-cn.txt > rules/apple-cn.txt
+
+# 合并国内规则，去重，转纯域名格式
+cat rules/apple-cn.txt \
+  | grep -v '^#' | grep -v '^$' \
+  | sed 's/^server=\/\([^/]*\)\/.*$/\1/' \
+  | sort | uniq > rules/apple-cn.conf
 
 # =============================
 # 国外规则
